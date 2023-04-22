@@ -36,6 +36,7 @@ export const Login = () => {
 
 		if ('token' in data.payload) {
 			const user = JSON.stringify({
+				id: data.payload._id,
 				fullName: data.payload.fullName,
 				avatarUrl: data.payload.avatarUrl,
 			})

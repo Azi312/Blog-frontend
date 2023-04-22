@@ -12,6 +12,7 @@ import styles from './Post.module.scss'
 import { UserInfo } from '../UserInfo'
 import { PostSkeleton } from './Skeleton'
 import { fetchRemovePost } from '../../redux/slices/posts'
+import { getUserFromLS } from '../../utils/getUserFromLS'
 
 export const Post = ({
 	id,
@@ -28,6 +29,8 @@ export const Post = ({
 	isEditable,
 }) => {
 	const dispatch = useDispatch()
+
+	const userId = getUserFromLS()
 
 	const onClickRemove = () => {
 		if (window.confirm('Do you really want to delete this post?')) {
