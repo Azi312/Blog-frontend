@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import IconButton from '@mui/material/IconButton'
@@ -20,6 +20,7 @@ export const Post = ({
 	createdAt,
 	imageUrl,
 	user,
+	userId,
 	viewsCount,
 	commentsCount,
 	tags,
@@ -29,8 +30,9 @@ export const Post = ({
 	isEditable,
 }) => {
 	const dispatch = useDispatch()
+	const userFromLs = getUserFromLS()
 
-	const userId = getUserFromLS()
+	const idUser = userFromLs.id === userId ? true : false
 
 	const onClickRemove = () => {
 		if (window.confirm('Do you really want to delete this post?')) {
@@ -44,7 +46,7 @@ export const Post = ({
 
 	return (
 		<div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
-			{isEditable && (
+			{idUser && (
 				<div className={styles.editButtons}>
 					<Link to={`/posts/${id}/edit`}>
 						<IconButton color='primary'>

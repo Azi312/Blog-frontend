@@ -34,6 +34,7 @@ export const AddPost = () => {
 			formData.append('image', file)
 			const { data } = await axios.post('/upload', formData)
 			setImageUrl(data.url)
+			console.log(data.url)
 		} catch (error) {
 			console.warn(error)
 			alert('Error while uploading image. Try again later.')
@@ -119,6 +120,7 @@ export const AddPost = () => {
 				ref={inputFileRef}
 				type='file'
 				onChange={handleChangeFile}
+				name='image'
 				hidden
 			/>
 			{imageUrl && (
@@ -132,7 +134,8 @@ export const AddPost = () => {
 					</Button>
 					<img
 						className={styles.image}
-						src={`${process.env.REACT_APP_API_URL}${imageUrl}`}
+						src={imageUrl}
+						// src={`${process.env.REACT_APP_API_URL}${imageUrl}`}
 						alt='Uploaded'
 					/>
 				</>

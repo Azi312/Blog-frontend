@@ -5,7 +5,7 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async params => {
 	const { sort, filter } = params
 	const { data } = await axios.get(`/posts`, {
 		params: {
-			limit: 5,
+			// limit: 5,
 			sort,
 			tags: filter,
 		},
