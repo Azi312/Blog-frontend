@@ -9,8 +9,6 @@ import { Post } from '../components/Post'
 import { TagsBlock } from '../components/TagsBlock'
 import { CommentsBlock } from '../components/CommentsBlock'
 import { fetchPosts, fetchTags, fetchComments } from '../redux/slices/posts'
-import axios from '../axios'
-import { getUserFromLS } from '../utils/getUserFromLS'
 
 export const Home = () => {
 	const [filter, setFilter] = React.useState('')
@@ -34,8 +32,6 @@ export const Home = () => {
 	const isPostsLoading = posts.status === 'loading'
 	const isTagsLoading = tags.status === 'loading'
 	const isCommentsLoading = comments.status === 'loading'
-
-	console.log(posts.items)
 
 	React.useEffect(() => {
 		dispatch(fetchPosts({ sort, filter }))
@@ -81,11 +77,6 @@ export const Home = () => {
 							<Post
 								id={obj._id}
 								title={obj.title}
-								// imageUrl={
-								// 	obj.imageUrl
-								// 		? `${process.env.REACT_APP_API_URL}${obj.imageUrl}`
-								// 		: ''
-								// }
 								imageUrl={obj.imageUrl}
 								user={obj.user}
 								userId={obj.user._id}

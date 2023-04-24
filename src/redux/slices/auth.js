@@ -7,8 +7,11 @@ export const fetchAuth = createAsyncThunk('posts/fetchAuth', async params => {
 })
 export const fetchRegister = createAsyncThunk(
 	'posts/fetchRegister',
-	async params => {
-		const { data } = await axios.post('/auth/register', params)
+	async ({ values, avatarUrl }) => {
+		const { data } = await axios.post('/auth/register', {
+			...values,
+			avatarUrl,
+		})
 		return data
 	}
 )
