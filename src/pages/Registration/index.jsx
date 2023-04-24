@@ -123,7 +123,7 @@ export const Registration = () => {
 						opacity: isHovered ? 1 : 0,
 						height: '22px',
 						position: 'absolute',
-						top: 'calc(55% - 24px)',
+						top: 'calc(50% - 24px)',
 						left: 'calc(49% - 24px)',
 						zIndex: '10',
 						transition: 'all 0.3s ease',
