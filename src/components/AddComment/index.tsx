@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { FC } from 'react'
 
 import styles from './AddComment.module.scss'
 
@@ -6,26 +6,27 @@ import TextField from '@mui/material/TextField'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchPosts } from '../../redux/slices/posts'
-import { useNavigate, Navigate, useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import axios from '../../axios'
 import { getUserFromLS } from '../../utils/getUserFromLS'
+import { authSelector } from '../../redux/slices/auth'
 
-export const Index = ({ isAddingComment, fetchFullPost }) => {
-	const [text, setText] = React.useState('')
+interface AddCommentProps {
+	fetchFullPost: () => void
+}
+
+export const Index: FC<AddCommentProps> = ({ fetchFullPost }) => {
+	const [text, setText] = React.useState<string>('')
 	const { id } = useParams()
 
-	const { posts } = useSelector(state => state.posts)
-	const userData = useSelector(state => state.auth.data)
-	const dispatch = useDispatch()
+	const userData = useSelector(authSelector)
 
 	const user = getUserFromLS()
 
-	const handleSubmit = async e => {
+	const handleSubmit = async (e: any) => {
 		e.preventDefault()
 		try {
-			// isAddingComment.current = true
 			await axios.post(`/posts/${id}/comments`, {
 				text,
 				user: {
@@ -44,8 +45,6 @@ export const Index = ({ isAddingComment, fetchFullPost }) => {
 			}
 			console.log(error)
 			alert('Something went wrong')
-		} finally {
-			// isAddingComment.current = false
 		}
 	}
 

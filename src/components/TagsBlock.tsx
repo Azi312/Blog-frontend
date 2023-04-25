@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
@@ -10,9 +10,19 @@ import Skeleton from '@mui/material/Skeleton'
 
 import { SideBlock } from './SideBlock'
 
-export const TagsBlock = ({ items, isLoading = true, onFilterChange }) => {
-	const handleClick = tag => {
-		onFilterChange(null, tag)
+interface TagsBlockProps {
+	items: string[]
+	isLoading?: boolean
+	onFilterChange: (tag: string) => void
+}
+
+export const TagsBlock: FC<TagsBlockProps> = ({
+	items,
+	isLoading = true,
+	onFilterChange,
+}) => {
+	const handleClick = (tag: string) => {
+		onFilterChange(tag)
 	}
 
 	return (

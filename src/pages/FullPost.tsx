@@ -6,9 +6,10 @@ import axios from '../axios'
 import { Post } from '../components/Post'
 import { Index } from '../components/AddComment'
 import { CommentsBlock } from '../components/CommentsBlock'
+import { PostItems } from '../redux/slices/posts/types'
 
 export const FullPost = () => {
-	const [data, setData] = React.useState()
+	const [data, setData] = React.useState<PostItems>({} as PostItems)
 	const [isLoading, setIsLoading] = React.useState(true)
 	const { id } = useParams()
 
@@ -18,8 +19,8 @@ export const FullPost = () => {
 	const fetchFullPost = async () => {
 		try {
 			// if (!isAddingComment.current) {
-			const res = await axios.get(`/posts/${id}`)
-			setData(res.data)
+			const { data } = await axios.get(`/posts/${id}`)
+			setData(data)
 			setIsLoading(false)
 			// }
 		} catch (error) {
@@ -33,7 +34,16 @@ export const FullPost = () => {
 	}, [id, tes])
 
 	if (isLoading) {
-		return <Post isLoading={isLoading} isFullPost />
+		return (
+			<Post
+				id={''}
+				userId={''}
+				commentsCount={0}
+				isLoading={isLoading}
+				{...data}
+				isFullPost
+			/>
+		)
 	}
 
 	return (
@@ -48,6 +58,7 @@ export const FullPost = () => {
 				commentsCount={data.comments.length}
 				tags={data.tags}
 				isFullPost
+				userId={''}
 			>
 				<ReactMarkdown children={data.text} />
 			</Post>

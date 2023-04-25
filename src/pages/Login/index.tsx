@@ -9,9 +9,15 @@ import Button from '@mui/material/Button'
 import styles from './Login.module.scss'
 import { useForm } from 'react-hook-form'
 import { fetchAuth, selectAuth } from '../../redux/slices/auth'
+import { useAppDispatch } from '../../redux/store'
+
+interface Values {
+	email: string
+	password: string
+}
 
 export const Login = () => {
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 	const isAuth = useSelector(selectAuth)
 
 	const {
@@ -21,13 +27,13 @@ export const Login = () => {
 		formState: { errors, isValid },
 	} = useForm({
 		defaultValues: {
-			email: 'rest@gmail.com',
-			password: '12345',
+			email: '',
+			password: '',
 		},
 		mode: 'onChange',
 	})
 
-	const onSubmit = async values => {
+	const onSubmit = async (values: Values) => {
 		const data = await dispatch(fetchAuth(values))
 
 		if (!data.payload) {

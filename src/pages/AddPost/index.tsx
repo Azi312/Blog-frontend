@@ -16,18 +16,18 @@ export const AddPost = () => {
 	const navigate = useNavigate()
 	const { id } = useParams()
 
-	const [text, setText] = React.useState('')
+	const [text, setText] = React.useState<string>('')
 	const [loading, setLoading] = React.useState(false)
 	const [title, setTitle] = React.useState('')
 	const [tags, setTags] = React.useState('')
 	const [imageUrl, setImageUrl] = React.useState('')
-	const inputFileRef = React.useRef(null)
+	const inputFileRef = React.useRef(null as any)
 
 	const isEditing = Boolean(id)
 
 	const isAuth = useSelector(selectAuth)
 
-	const handleChangeFile = async event => {
+	const handleChangeFile = async (event: any) => {
 		try {
 			const formData = new FormData()
 			const file = event.target.files[0]
@@ -67,7 +67,7 @@ export const AddPost = () => {
 		}
 	}
 
-	const onChange = React.useCallback(value => {
+	const onChange = React.useCallback((value: string) => {
 		setText(value)
 	}, [])
 
@@ -98,6 +98,7 @@ export const AddPost = () => {
 			autosave: {
 				enabled: true,
 				delay: 1000,
+				uniqueId: 'addPost',
 			},
 		}),
 		[]

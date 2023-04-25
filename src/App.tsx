@@ -5,11 +5,11 @@ import { Routes, Route } from 'react-router-dom'
 import { Header } from './components'
 import { Home, FullPost, Registration, AddPost, Login } from './pages'
 import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch } from './redux/store'
 import { fetchAuthMe, selectAuth } from './redux/slices/auth'
 
 function App() {
-	const dispatch = useDispatch()
-	const isAuth = useSelector(selectAuth)
+	const dispatch = useAppDispatch()
 
 	React.useEffect(() => {
 		dispatch(fetchAuthMe())

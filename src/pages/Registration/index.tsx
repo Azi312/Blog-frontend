@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { fetchRegister, selectAuth } from '../../redux/slices/auth'
 import { useForm } from 'react-hook-form'
 import { Navigate } from 'react-router-dom'
@@ -15,14 +15,21 @@ import DeleteIcon from '@mui/icons-material/Delete'
 
 import styles from './Login.module.scss'
 import axios from '../../axios'
+import { useAppDispatch } from '../../redux/store'
+
+interface Values {
+	fullName: string
+	email: string
+	password: string
+}
 
 export const Registration = () => {
 	const [avatarUrl, setAvatarUrl] = React.useState('')
 	const [isHovered, setIsHovered] = React.useState(false)
 
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 	const isAuth = useSelector(selectAuth)
-	const inputFileRef = React.useRef(null)
+	const inputFileRef = React.useRef(null as any)
 
 	const {
 		register,
@@ -39,7 +46,7 @@ export const Registration = () => {
 		mode: 'onChange',
 	})
 
-	const handleChangeFile = async event => {
+	const handleChangeFile = async (event: any) => {
 		try {
 			const formData = new FormData()
 			const file = event.target.files[0]
@@ -52,7 +59,7 @@ export const Registration = () => {
 		}
 	}
 
-	const onSubmit = async values => {
+	const onSubmit = async (values: Values) => {
 		const data = await dispatch(fetchRegister({ values, avatarUrl }))
 		if (!data.payload) {
 			alert('Wrong email or password')
@@ -96,7 +103,6 @@ export const Registration = () => {
 						<IconButton
 							onClick={() => inputFileRef.current.click()}
 							color='primary'
-							variant='outlined'
 							size='large'
 						>
 							<input

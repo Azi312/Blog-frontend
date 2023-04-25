@@ -1,5 +1,4 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import IconButton from '@mui/material/IconButton'
@@ -9,12 +8,33 @@ import EyeIcon from '@mui/icons-material/RemoveRedEyeOutlined'
 import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined'
 
 import styles from './Post.module.scss'
+import { useAppDispatch } from '../../redux/store'
 import { UserInfo } from '../UserInfo'
 import { PostSkeleton } from './Skeleton'
-import { fetchRemovePost } from '../../redux/slices/posts'
+import { fetchRemovePost } from '../../redux/slices/posts/posts'
 import { getUserFromLS } from '../../utils/getUserFromLS'
 
-export const Post = ({
+interface PostProps {
+	id: string
+	title: string
+	createdAt: string
+	imageUrl: string
+	user: {
+		_id: string
+		fullName: string
+		avatarUrl: string
+	}
+	userId?: string
+	viewsCount: number
+	commentsCount: number
+	tags: string[]
+	children?: React.ReactNode
+	isFullPost?: boolean
+	isLoading?: boolean
+	isEditable?: boolean
+}
+
+export const Post: FC<PostProps> = ({
 	id,
 	title,
 	createdAt,
@@ -29,10 +49,10 @@ export const Post = ({
 	isLoading,
 	isEditable,
 }) => {
-	const dispatch = useDispatch()
-	const userFromLs = getUserFromLS()
+	const dispatch = useAppDispatch()
+	const userFromLS = getUserFromLS()
 
-	const idUser = userFromLs.id === userId ? true : false
+	const idUser = userFromLS.id === userId ? true : false
 
 	const onClickRemove = () => {
 		if (window.confirm('Do you really want to delete this post?')) {

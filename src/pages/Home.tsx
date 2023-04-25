@@ -8,26 +8,33 @@ import ClearIcon from '@mui/icons-material/Clear'
 import { Post } from '../components/Post'
 import { TagsBlock } from '../components/TagsBlock'
 import { CommentsBlock } from '../components/CommentsBlock'
-import { fetchPosts, fetchTags, fetchComments } from '../redux/slices/posts'
+import {
+	fetchPosts,
+	fetchTags,
+	fetchComments,
+	selectPostsData,
+} from '../redux/slices/posts/posts'
+import { authSelector } from '../redux/slices/auth'
+import { useAppDispatch } from '../redux/store'
 
 export const Home = () => {
-	const [filter, setFilter] = React.useState('')
-	const [sortBy, setSortBy] = React.useState()
-	const [value, setValue] = React.useState(0)
+	const [filter, setFilter] = React.useState<string>('')
+	const [sortBy, setSortBy] = React.useState<string>()
+	const [value, setValue] = React.useState<number>(0)
 
-	const handleChange = (event, newValue) => {
+	const handleChange = (event: React.SyntheticEvent, newValue: number) => {
 		setValue(newValue)
 	}
 
-	const handleFilterChange = (event, newValue) => {
+	const handleFilterChange = (newValue: string) => {
 		setFilter(newValue)
 	}
 
 	const sort = sortBy ? `sortBy=${sortBy}` : ''
 
-	const dispatch = useDispatch()
-	const { posts, tags, comments } = useSelector(state => state.posts)
-	const userData = useSelector(state => state.auth.data)
+	const dispatch = useAppDispatch()
+	const { posts, tags, comments } = useSelector(selectPostsData)
+	const userData = useSelector(authSelector)
 
 	const isPostsLoading = posts.status === 'loading'
 	const isTagsLoading = tags.status === 'loading'
@@ -61,7 +68,7 @@ export const Home = () => {
 				>
 					<span># {filter}</span>{' '}
 					<ClearIcon
-						fontSize='20'
+						// fontSize='20'
 						onClick={() => setFilter('')}
 						style={{ cursor: 'pointer' }}
 					/>
@@ -72,19 +79,19 @@ export const Home = () => {
 				<Grid xs={8} item>
 					{(isPostsLoading ? [...Array(5)] : posts.items).map((obj, index) =>
 						isPostsLoading ? (
-							<Post key={index} isLoading={true} />
+							<Post key={index} isLoading={true} {...obj} />
 						) : (
 							<Post
 								id={obj._id}
 								title={obj.title}
 								imageUrl={obj.imageUrl}
 								user={obj.user}
-								userId={obj.user._id}
+								userId={obj.user?._id}
 								createdAt={obj.createdAt}
 								viewsCount={obj.viewsCount}
 								commentsCount={obj.comments.length}
 								tags={obj.tags}
-								isEditable={userData?._id === obj.user._id}
+								// isEditable={userData?._id === obj.user._id}
 							/>
 						)
 					)}
