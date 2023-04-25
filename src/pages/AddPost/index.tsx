@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import { useNavigate, Navigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectAuth } from '../../redux/slices/auth'
@@ -16,7 +16,7 @@ export const AddPost = () => {
 	const navigate = useNavigate()
 	const { id } = useParams()
 
-	const [text, setText] = React.useState<string>('')
+	const [text, setText] = React.useState('')
 	const [loading, setLoading] = React.useState(false)
 	const [title, setTitle] = React.useState('')
 	const [tags, setTags] = React.useState('')
@@ -27,14 +27,18 @@ export const AddPost = () => {
 
 	const isAuth = useSelector(selectAuth)
 
-	const handleChangeFile = async (event: any) => {
+	const handleChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
 		try {
+			const file = event.target.files?.[0]
+			if (!file) {
+				return
+			}
+
 			const formData = new FormData()
-			const file = event.target.files[0]
+			// const file = event.target.files[0]
 			formData.append('image', file)
 			const { data } = await axios.post('/upload', formData)
 			setImageUrl(data.url)
-			console.log(data.url)
 		} catch (error) {
 			console.warn(error)
 			alert('Error while uploading image. Try again later.')

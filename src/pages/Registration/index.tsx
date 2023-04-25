@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import { useSelector } from 'react-redux'
 import { fetchRegister, selectAuth } from '../../redux/slices/auth'
 import { useForm } from 'react-hook-form'
@@ -46,10 +46,15 @@ export const Registration = () => {
 		mode: 'onChange',
 	})
 
-	const handleChangeFile = async (event: any) => {
+	const handleChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
 		try {
+			const file = event.target.files?.[0]
+			if (!file) {
+				return
+			}
+
 			const formData = new FormData()
-			const file = event.target.files[0]
+			// const file = event.target.files[0]
 			formData.append('avatar', file)
 			const { data } = await axios.post('/upload-avatar', formData)
 			setAvatarUrl(data.url)
