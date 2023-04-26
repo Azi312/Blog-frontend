@@ -52,17 +52,6 @@ export const Login = () => {
 		}
 	}
 
-	const isMounted = React.useRef(false)
-
-	// React.useEffect(() => {
-	// 	if (isMounted.current) {
-	// 		const json = JSON.stringify(todos)
-	// 		localStorage.setItem('todos', json)
-	// 	}
-
-	// 	isMounted.current = true
-	// }, [todos])
-
 	if (isAuth) {
 		return <Navigate to='/' />
 	}

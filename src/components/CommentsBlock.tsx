@@ -1,6 +1,5 @@
-import React, { FC, PropsWithChildren } from 'react'
+import React, { FC, MutableRefObject } from 'react'
 
-import { SideBlock } from './SideBlock'
 import ListItem from '@mui/material/ListItem'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import Avatar from '@mui/material/Avatar'
@@ -8,19 +7,44 @@ import ListItemText from '@mui/material/ListItemText'
 import Divider from '@mui/material/Divider'
 import List from '@mui/material/List'
 import Skeleton from '@mui/material/Skeleton'
+import IconButton from '@mui/material/IconButton'
+import DeleteIcon from '@mui/icons-material/Clear'
+
 import { CommentsItems } from '../redux/slices/posts/types'
+import { SideBlock } from './SideBlock'
+import { getUserFromLS } from '../utils/getUserFromLS'
+import { fetchRemoveComment } from '../redux/slices/posts/posts'
+import { useAppDispatch } from '../redux/store'
 
 interface CommentsBlockProps {
-	items: CommentsItems[] | []
+	postId: string
+	items: CommentsItems[]
 	children?: React.ReactNode
 	isLoading?: boolean
+	fetchFullPost: () => void
+	isMounted?: MutableRefObject<boolean>
 }
 
 export const CommentsBlock: FC<CommentsBlockProps> = ({
+	postId,
 	items,
 	children,
 	isLoading = true,
+	fetchFullPost,
+	isMounted,
 }) => {
+	const dispatch = useAppDispatch()
+
+	const userFromLS = getUserFromLS()
+
+	const onClickRemove = (commentId: string) => {
+		if (window.confirm('Do you really want to delete your comment?')) {
+			dispatch(fetchRemoveComment({ postId, commentId }))
+			isMounted!.current = true
+			fetchFullPost()
+		}
+	}
+
 	return (
 		<SideBlock title='Comments'>
 			<List>
@@ -44,6 +68,14 @@ export const CommentsBlock: FC<CommentsBlockProps> = ({
 									primary={obj.user.fullName}
 									secondary={obj.text}
 								/>
+							)}
+							{userFromLS.id === obj?.user.id && (
+								<IconButton
+									onClick={() => onClickRemove(obj._id)}
+									color='secondary'
+								>
+									<DeleteIcon />
+								</IconButton>
 							)}
 						</ListItem>
 						<Divider variant='inset' component='li' />

@@ -15,7 +15,7 @@ import { fetchRemovePost } from '../../redux/slices/posts/posts'
 import { getUserFromLS } from '../../utils/getUserFromLS'
 
 interface PostProps {
-	id: string
+	id?: string
 	title: string
 	createdAt: string
 	imageUrl: string
@@ -31,6 +31,7 @@ interface PostProps {
 	children?: React.ReactNode
 	isFullPost?: boolean
 	isLoading?: boolean
+	onFilterChange?: (tag: string) => void
 	isEditable?: boolean
 }
 
@@ -47,16 +48,24 @@ export const Post: FC<PostProps> = ({
 	children,
 	isFullPost,
 	isLoading,
+	onFilterChange,
 	isEditable,
 }) => {
 	const dispatch = useAppDispatch()
 	const userFromLS = getUserFromLS()
 
 	const idUser = userFromLS.id === userId ? true : false
+	const currentPath = window.location.pathname
+
+	const onClickTag = (tag: string) => {
+		if (onFilterChange) {
+			onFilterChange(tag)
+		}
+	}
 
 	const onClickRemove = () => {
 		if (window.confirm('Do you really want to delete this post?')) {
-			dispatch(fetchRemovePost(id))
+			dispatch(fetchRemovePost(id!))
 		}
 	}
 
@@ -96,7 +105,12 @@ export const Post: FC<PostProps> = ({
 					<ul className={styles.tags}>
 						{tags.map(name => (
 							<li key={name}>
-								<Link to={`/tag/${name}`}>#{name}</Link>
+								<li
+									style={{ cursor: `${currentPath === '/' && 'pointer'}` }}
+									onClick={() => onClickTag(name)}
+								>
+									#{name}
+								</li>
 							</li>
 						))}
 					</ul>

@@ -18,11 +18,9 @@ export const FullPost = () => {
 
 	const fetchFullPost = async () => {
 		try {
-			// if (!isAddingComment.current) {
 			const { data } = await axios.get(`/posts/${id}`)
 			setData(data)
 			setIsLoading(false)
-			// }
 		} catch (error) {
 			console.log(error)
 			alert('Failed to load post')
@@ -31,19 +29,11 @@ export const FullPost = () => {
 
 	useEffect(() => {
 		fetchFullPost()
+		isMounted.current = false
 	}, [id, tes])
 
 	if (isLoading) {
-		return (
-			<Post
-				id={''}
-				userId={''}
-				commentsCount={0}
-				isLoading={isLoading}
-				{...data}
-				isFullPost
-			/>
-		)
+		return <Post commentsCount={0} isLoading={isLoading} {...data} isFullPost />
 	}
 
 	return (
@@ -58,11 +48,16 @@ export const FullPost = () => {
 				commentsCount={data.comments.length}
 				tags={data.tags}
 				isFullPost
-				userId={''}
 			>
 				<ReactMarkdown children={data.text} />
 			</Post>
-			<CommentsBlock items={data.comments} isLoading={false}>
+			<CommentsBlock
+				postId={data._id}
+				items={data.comments}
+				isLoading={false}
+				fetchFullPost={fetchFullPost}
+				isMounted={isMounted}
+			>
 				<Index fetchFullPost={fetchFullPost} />
 			</CommentsBlock>
 		</>

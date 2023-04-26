@@ -4,8 +4,13 @@ import { PostsState } from './types'
 import { RootState } from '../../store'
 
 interface FetchPostsParams {
-	sort: string
-	filter: string
+	sort?: string
+	filter?: string
+}
+
+interface FetchRemoveCommentParams {
+	postId: string
+	commentId: string
 }
 
 export const fetchPosts = createAsyncThunk(
@@ -38,6 +43,16 @@ export const fetchRemovePost = createAsyncThunk(
 	'posts/fetchRemovePost',
 	async (id: string) => {
 		const { data } = await axios.delete(`/posts/${id}`)
+		return data
+	}
+)
+export const fetchRemoveComment = createAsyncThunk(
+	'posts/fetchRemoveComment',
+	async (params: FetchRemoveCommentParams) => {
+		const { postId, commentId } = params
+		const { data } = await axios.delete(
+			`/posts/${postId}/comments/${commentId}`
+		)
 		return data
 	}
 )
@@ -106,10 +121,6 @@ export const postSlice = createSlice({
 			})
 
 			//remove post
-			// .addCase(fetchRemovePost.pending, (state, action) => {
-			// 	const id = action.meta.arg
-			// 	state.posts.items = state.posts.items.filter(post => post._id !== id)
-			// })
 			.addMatcher(
 				action => action.type === fetchRemovePost.pending.type,
 				(state, action) => {

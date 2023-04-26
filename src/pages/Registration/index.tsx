@@ -102,8 +102,8 @@ export const Registration = () => {
 						alt='/broken-image.jpg'
 						src={avatarUrl}
 						sx={{ width: 100, height: 100 }}
-						onMouseEnter={() => setIsHovered(avatarUrl ? true : false)}
-						onMouseLeave={() => setIsHovered(avatarUrl ? false : true)}
+						onMouseEnter={() => setIsHovered(true)}
+						onMouseLeave={() => setIsHovered(false)}
 					>
 						<IconButton
 							onClick={() => inputFileRef.current.click()}
@@ -125,8 +125,8 @@ export const Registration = () => {
 			</div>
 			{avatarUrl ? (
 				<Button
-					onMouseEnter={() => setIsHovered(avatarUrl ? true : false)}
-					onMouseLeave={() => setIsHovered(avatarUrl ? false : true)}
+					onMouseEnter={() => setIsHovered(true)}
+					onMouseLeave={() => setIsHovered(false)}
 					variant='contained'
 					size='small'
 					onClick={removeAvatar}

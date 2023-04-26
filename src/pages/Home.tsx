@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Grid from '@mui/material/Grid'
@@ -14,7 +14,6 @@ import {
 	fetchComments,
 	selectPostsData,
 } from '../redux/slices/posts/posts'
-import { authSelector } from '../redux/slices/auth'
 import { useAppDispatch } from '../redux/store'
 
 export const Home = () => {
@@ -34,7 +33,6 @@ export const Home = () => {
 
 	const dispatch = useAppDispatch()
 	const { posts, tags, comments } = useSelector(selectPostsData)
-	const userData = useSelector(authSelector)
 
 	const isPostsLoading = posts.status === 'loading'
 	const isTagsLoading = tags.status === 'loading'
@@ -68,7 +66,7 @@ export const Home = () => {
 				>
 					<span># {filter}</span>{' '}
 					<ClearIcon
-						// fontSize='20'
+						fontSize='large'
 						onClick={() => setFilter('')}
 						style={{ cursor: 'pointer' }}
 					/>
@@ -91,6 +89,7 @@ export const Home = () => {
 								viewsCount={obj.viewsCount}
 								commentsCount={obj.comments.length}
 								tags={obj.tags}
+								onFilterChange={handleFilterChange}
 								// isEditable={userData?._id === obj.user._id}
 							/>
 						)
@@ -102,7 +101,12 @@ export const Home = () => {
 						onFilterChange={handleFilterChange}
 						isLoading={isTagsLoading}
 					/>
-					<CommentsBlock items={comments.items} isLoading={isCommentsLoading} />
+					<CommentsBlock
+						items={comments.items}
+						isLoading={isCommentsLoading}
+						fetchFullPost={() => {}}
+						postId={''}
+					/>
 				</Grid>
 			</Grid>
 		</>

@@ -1,4 +1,5 @@
 export interface CommentsItems {
+	_id: string
 	text: string
 	user: {
 		id: string
