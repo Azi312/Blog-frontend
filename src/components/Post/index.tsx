@@ -13,6 +13,7 @@ import { UserInfo } from '../UserInfo'
 import { PostSkeleton } from './Skeleton'
 import { fetchRemovePost } from '../../redux/slices/posts/posts'
 import { getUserFromLS } from '../../utils/getUserFromLS'
+import moment from 'moment'
 
 interface PostProps {
 	id?: string
@@ -95,7 +96,7 @@ export const Post: FC<PostProps> = ({
 				/>
 			)}
 			<div className={styles.wrapper}>
-				<UserInfo {...user} additionalText={createdAt} />
+				<UserInfo {...user} additionalText={moment(createdAt).fromNow()} />
 				<div className={styles.indention}>
 					<h2
 						className={clsx(styles.title, { [styles.titleFull]: isFullPost })}

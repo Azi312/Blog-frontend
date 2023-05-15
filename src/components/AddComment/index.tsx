@@ -1,4 +1,6 @@
 import React, { FC } from 'react'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
 import styles from './AddComment.module.scss'
 
@@ -6,11 +8,9 @@ import TextField from '@mui/material/TextField'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 
-import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
-import axios from '../../axios'
 import { getUserFromLS } from '../../utils/getUserFromLS'
 import { authSelector } from '../../redux/slices/auth'
+import axios from '../../axios'
 
 interface AddCommentProps {
 	fetchFullPost: () => void
@@ -21,7 +21,6 @@ export const Index: FC<AddCommentProps> = ({ fetchFullPost }) => {
 	const { id } = useParams()
 
 	const userData = useSelector(authSelector)
-
 	const user = getUserFromLS()
 
 	const handleSubmit = async (e: any) => {

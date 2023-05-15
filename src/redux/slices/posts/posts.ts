@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from '../../../axios'
-import { PostsState } from './types'
+import { PostItems, PostsState } from './types'
 import { RootState } from '../../store'
 
 interface FetchPostsParams {
@@ -78,6 +78,7 @@ export const postSlice = createSlice({
 	reducers: {},
 	extraReducers: builder => {
 		builder
+
 			//get posts
 			.addCase(fetchPosts.pending, state => {
 				state.posts.items = []
@@ -118,6 +119,21 @@ export const postSlice = createSlice({
 			.addCase(fetchComments.rejected, state => {
 				state.comments.items = []
 				state.comments.status = 'failed'
+			})
+
+			// remove comment
+			.addCase(fetchRemoveComment.fulfilled, (state, action) => {
+				const { postId, commentId } = action.meta.arg
+				const updatedPosts = state.posts.items.map(post => {
+					if (post._id === postId) {
+						const updatedComments = post.comments.filter(
+							comment => comment._id !== commentId
+						)
+						post.comments = updatedComments
+					}
+					return post
+				})
+				state.posts.items = updatedPosts
 			})
 
 			//remove post

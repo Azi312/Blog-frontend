@@ -21,8 +21,6 @@ interface CommentsBlockProps {
 	items: CommentsItems[]
 	children?: React.ReactNode
 	isLoading?: boolean
-	fetchFullPost: () => void
-	isMounted?: MutableRefObject<boolean>
 }
 
 export const CommentsBlock: FC<CommentsBlockProps> = ({
@@ -30,8 +28,6 @@ export const CommentsBlock: FC<CommentsBlockProps> = ({
 	items,
 	children,
 	isLoading = true,
-	fetchFullPost,
-	isMounted,
 }) => {
 	const dispatch = useAppDispatch()
 
@@ -40,8 +36,6 @@ export const CommentsBlock: FC<CommentsBlockProps> = ({
 	const onClickRemove = (commentId: string) => {
 		if (window.confirm('Do you really want to delete your comment?')) {
 			dispatch(fetchRemoveComment({ postId, commentId }))
-			isMounted!.current = true
-			fetchFullPost()
 		}
 	}
 

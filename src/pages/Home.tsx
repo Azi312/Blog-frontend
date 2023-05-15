@@ -104,7 +104,6 @@ export const Home = () => {
 					<CommentsBlock
 						items={comments.items}
 						isLoading={isCommentsLoading}
-						fetchFullPost={() => {}}
 						postId={''}
 					/>
 				</Grid>
